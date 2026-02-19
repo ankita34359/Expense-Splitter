@@ -34,8 +34,8 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 RUN touch database/database.sqlite
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/database
 
 # Expose port 8000 and start php-fpm server
 EXPOSE 8000
-CMD php artisan serve --host=0.0.0.0 --port=8000
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
