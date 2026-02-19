@@ -26,7 +26,7 @@ class ExpenseController extends Controller
         return $trip->expenses()->with('payer')->get();
     }
 
-    public function update(Request $request, Trip $trip, Expense $expense)
+    public function update(Request $request, $tripId, $expenseId)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -36,6 +36,7 @@ class ExpenseController extends Controller
             'split_between.*' => 'exists:members,id',
         ]);
 
+        $expense = Expense::findOrFail($expenseId);
         $expense->update($validated);
         return $expense;
     }
