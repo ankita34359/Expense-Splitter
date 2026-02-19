@@ -162,8 +162,8 @@ const App = () => {
                             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
                             <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-50 rounded-full -ml-12 -mb-12 opacity-50"></div>
 
-                            <h2 className="text-4xl font-extrabold mb-4 text-slate-800">Travel More, Worry Less</h2>
-                            <p className="text-lg text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
+                            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-slate-800">Travel More, Worry Less</h2>
+                            <p className="text-base md:text-lg text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
                                 The easiest way to track group expenses and settle up fairly. No more messy spreadsheets or awkward money talks.
                             </p>
 
@@ -196,12 +196,12 @@ const App = () => {
                                             onClick={() => handleSelectTrip(trip.id)}
                                             className="group flex justify-between items-center p-5 border border-slate-100 rounded-2xl hover:border-indigo-200 hover:bg-indigo-50/50 cursor-pointer transition-all active:scale-[0.98]"
                                         >
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl uppercase">
+                                            <div className="flex items-center gap-4 text-left">
+                                                <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex-shrink-0 flex items-center justify-center font-bold text-xl uppercase">
                                                     {trip.name.charAt(0)}
                                                 </div>
-                                                <div>
-                                                    <h3 className="font-bold text-lg text-slate-800 group-hover:text-indigo-700 transition-colors">{trip.name}</h3>
+                                                <div className="min-w-0">
+                                                    <h3 className="font-bold text-lg text-slate-800 group-hover:text-indigo-700 transition-colors truncate">{trip.name}</h3>
                                                     <p className="text-sm text-slate-500 font-medium flex items-center gap-1">
                                                         <Users className="w-3 h-3" /> {trip.members?.length || 0} participants
                                                     </p>
@@ -223,7 +223,7 @@ const App = () => {
                             </div>
                         </section>
 
-                        <section className="grid md:grid-cols-3 gap-6">
+                        <section className="grid gap-4 md:grid-cols-3 md:gap-6">
                             <div className="bg-green-50 p-6 rounded-2xl border border-green-100">
                                 <h4 className="font-bold text-green-700 mb-2">1. Add Members</h4>
                                 <p className="text-sm text-green-600/80">List all your travel buddies who will be sharing expenses.</p>
