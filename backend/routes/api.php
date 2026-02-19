@@ -15,5 +15,6 @@ Route::post('/trips/{trip}/members', [MemberController::class, 'store']);
 
 Route::get('/trips/{trip}/expenses', [ExpenseController::class, 'index']);
 Route::post('/trips/{trip}/expenses', [ExpenseController::class, 'store']);
+Route::put('/trips/{trip}/expenses/{expense}', [ExpenseController::class, 'update']);
 
 Route::get('/trips/{trip}/settlements', [SettlementController::class, 'calculate']);

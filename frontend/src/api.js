@@ -11,6 +11,7 @@ export const tripService = {
     addMember: (tripId, data) => api.post(`/trips/${tripId}/members`, data),
     getExpenses: (tripId) => api.get(`/trips/${tripId}/expenses`),
     addExpense: (tripId, data) => api.post(`/trips/${tripId}/expenses`, data),
+    updateExpense: (tripId, expenseId, data) => api.put(`/trips/${tripId}/expenses/${expenseId}`, data),
     getSettlements: (tripId) => api.get(`/trips/${tripId}/settlements`),
     delete: (id) => api.delete(`/trips/${id}`),
 };

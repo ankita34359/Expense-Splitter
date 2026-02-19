@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { tripService } from './api';
-import { Plus, Users, Receipt, Calculator, ChevronRight, Home, Trash2 } from 'lucide-react';
+import { Plus, Users, Receipt, Calculator, ChevronRight, Home, Trash2, Pencil, X } from 'lucide-react';
 
 const App = () => {
     const [view, setView] = useState('home'); // home, setup, detail, settle
@@ -19,6 +19,7 @@ const App = () => {
         split_between: []
     });
     const [settlements, setSettlements] = useState(null);
+    const [editingExpenseId, setEditingExpenseId] = useState(null);
 
     useEffect(() => {
         fetchTrips();
@@ -62,7 +63,13 @@ const App = () => {
             const res = await tripService.getById(id);
             setCurrentTrip(res.data);
             setView('detail');
-            setExpenseForm({ ...expenseForm, split_between: res.data.members.map(m => m.id) });
+            setExpenseForm({
+                title: '',
+                amount: '',
+                paid_by: '',
+                split_between: res.data.members.map(m => m.id)
+            });
+            setEditingExpenseId(null);
         } catch (err) {
             setError("Failed to load trip details");
         } finally {
@@ -78,19 +85,38 @@ const App = () => {
         }
         setLoading(true);
         try {
-            await tripService.addExpense(currentTrip.id, expenseForm);
+            if (editingExpenseId) {
+                await tripService.updateExpense(currentTrip.id, editingExpenseId, expenseForm);
+            } else {
+                await tripService.addExpense(currentTrip.id, expenseForm);
+            }
             await handleSelectTrip(currentTrip.id);
-            setExpenseForm({
-                title: '',
-                amount: '',
-                paid_by: '',
-                split_between: currentTrip.members.map(m => m.id)
-            });
         } catch (err) {
-            setError("Failed to add expense");
+            setError(editingExpenseId ? "Failed to update expense" : "Failed to add expense");
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleEditExpense = (expense) => {
+        setEditingExpenseId(expense.id);
+        setExpenseForm({
+            title: expense.title,
+            amount: parseFloat(expense.amount),
+            paid_by: expense.paid_by,
+            split_between: expense.split_between || []
+        });
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+    };
+
+    const cancelEdit = () => {
+        setEditingExpenseId(null);
+        setExpenseForm({
+            title: '',
+            amount: '',
+            paid_by: '',
+            split_between: currentTrip.members.map(m => m.id)
+        });
     };
 
     const fetchSettlements = async () => {
@@ -303,7 +329,6 @@ const App = () => {
 
                 {view === 'detail' && currentTrip && (
                     <div className="grid md:grid-cols-5 gap-6 animate-in slide-in-from-bottom duration-500">
-                        {/* Summary Sidebar */}
                         <aside className="md:col-span-2 space-y-6">
                             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                                 <h2 className="text-3xl font-bold mb-2">{currentTrip.name}</h2>
@@ -333,11 +358,22 @@ const App = () => {
                             </div>
                         </aside>
 
-                        {/* Expense Section */}
                         <div className="md:col-span-3 space-y-6">
                             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                                <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                                    <Receipt className="w-5 h-5 text-indigo-500" /> Add Expense
+                                <h3 className="font-bold text-lg mb-4 flex items-center justify-between">
+                                    <span className="flex items-center gap-2">
+                                        <Receipt className="w-5 h-5 text-indigo-500" />
+                                        {editingExpenseId ? 'Edit Expense' : 'Add Expense'}
+                                    </span>
+                                    {editingExpenseId && (
+                                        <button
+                                            type="button"
+                                            onClick={cancelEdit}
+                                            className="text-xs text-slate-400 hover:text-red-500 flex items-center gap-1"
+                                        >
+                                            <X className="w-3 h-3" /> Cancel Edit
+                                        </button>
+                                    )}
                                 </h3>
                                 <form onSubmit={handleAddExpense} className="space-y-4">
                                     <input
@@ -388,8 +424,8 @@ const App = () => {
                                             ))}
                                         </div>
                                     </div>
-                                    <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-black transition-all">
-                                        Add Expense
+                                    <button className={`w-full py-3 rounded-xl font-bold transition-all ${editingExpenseId ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-slate-900 hover:bg-black'} text-white`}>
+                                        {editingExpenseId ? 'Update Expense' : 'Add Expense'}
                                     </button>
                                 </form>
                             </div>
@@ -401,12 +437,21 @@ const App = () => {
                                         <p className="text-slate-400 text-center py-4 italic">No expenses yet.</p>
                                     ) : (
                                         currentTrip.expenses.slice().reverse().map(expense => (
-                                            <div key={expense.id} className="flex justify-between items-center p-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 rounded-lg">
-                                                <div>
+                                            <div key={expense.id} className="flex justify-between items-center p-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 rounded-lg group">
+                                                <div className="flex-1">
                                                     <p className="font-semibold">{expense.title}</p>
                                                     <p className="text-xs text-slate-500">Paid by {expense.payer?.name} • Split with {expense.split_between.length} people</p>
                                                 </div>
-                                                <p className="font-bold text-lg text-slate-700">₹{parseFloat(expense.amount).toFixed(2)}</p>
+                                                <div className="flex items-center gap-4">
+                                                    <p className="font-bold text-lg text-slate-700">₹{parseFloat(expense.amount).toFixed(2)}</p>
+                                                    <button
+                                                        onClick={() => handleEditExpense(expense)}
+                                                        className="p-2 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                                                        title="Edit Expense"
+                                                    >
+                                                        <Pencil className="w-4 h-4" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))
                                     )}
