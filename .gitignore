@@ -1,0 +1,9 @@
+**/node_modules
+**/vendor
+.env
+**/.env
+database/database.sqlite
+**/*.sqlite
+.vscode
+.idea
+.DS_Store
