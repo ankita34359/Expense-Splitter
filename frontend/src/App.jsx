@@ -140,7 +140,7 @@ const App = () => {
     const randomQuote = quotes[Math.floor(Date.now() / 86400000) % quotes.length];
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans p-4 md:p-8">
+        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans p-4 md:p-8 overflow-x-hidden">
             <header className="max-w-4xl mx-auto mb-8 flex justify-between items-center">
                 <h1 className="text-3xl font-bold text-indigo-600 flex items-center gap-2 cursor-pointer" onClick={() => setView('home')}>
                     <Calculator className="w-8 h-8" /> TripSplit
