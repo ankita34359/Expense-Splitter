@@ -158,7 +158,7 @@ const App = () => {
             <main className="max-w-4xl mx-auto">
                 {view === 'home' && (
                     <div className="grid gap-8">
-                        <section className="bg-white p-10 rounded-3xl shadow-xl border border-indigo-50 text-center relative overflow-hidden">
+                        <section className="bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-indigo-50 text-center relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
                             <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-50 rounded-full -ml-12 -mb-12 opacity-50"></div>
 
@@ -179,7 +179,7 @@ const App = () => {
                             </button>
                         </section>
 
-                        <section className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                        <section className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
                             <h2 className="text-xl font-bold mb-6 flex items-center gap-3 text-slate-700">
                                 <span className="bg-indigo-100 p-2 rounded-lg text-indigo-600"><Users className="w-5 h-5" /></span>
                                 Your Recent Trips
@@ -196,13 +196,13 @@ const App = () => {
                                             onClick={() => handleSelectTrip(trip.id)}
                                             className="group flex justify-between items-center p-5 border border-slate-100 rounded-2xl hover:border-indigo-200 hover:bg-indigo-50/50 cursor-pointer transition-all active:scale-[0.98]"
                                         >
-                                            <div className="flex items-center gap-4 text-left">
-                                                <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex-shrink-0 flex items-center justify-center font-bold text-xl uppercase">
+                                            <div className="flex items-center gap-3 md:gap-4 text-left w-full">
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 text-indigo-600 rounded-xl flex-shrink-0 flex items-center justify-center font-bold text-lg md:text-xl uppercase">
                                                     {trip.name.charAt(0)}
                                                 </div>
-                                                <div className="min-w-0">
-                                                    <h3 className="font-bold text-lg text-slate-800 group-hover:text-indigo-700 transition-colors truncate">{trip.name}</h3>
-                                                    <p className="text-sm text-slate-500 font-medium flex items-center gap-1">
+                                                <div className="min-w-0 flex-1">
+                                                    <h3 className="font-bold text-base md:text-lg text-slate-800 group-hover:text-indigo-700 transition-colors truncate">{trip.name}</h3>
+                                                    <p className="text-xs md:text-sm text-slate-500 font-medium flex items-center gap-1">
                                                         <Users className="w-3 h-3" /> {trip.members?.length || 0} participants
                                                     </p>
                                                 </div>
