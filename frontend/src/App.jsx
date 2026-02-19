@@ -196,7 +196,7 @@ const App = () => {
                                             onClick={() => handleSelectTrip(trip.id)}
                                             className="group flex justify-between items-center p-5 border border-slate-100 rounded-2xl hover:border-indigo-200 hover:bg-indigo-50/50 cursor-pointer transition-all active:scale-[0.98]"
                                         >
-                                            <div className="flex items-center gap-3 md:gap-4 text-left w-full">
+                                            <div className="flex items-center gap-3 md:gap-4 text-left min-w-0 flex-1">
                                                 <div className="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 text-indigo-600 rounded-xl flex-shrink-0 flex items-center justify-center font-bold text-lg md:text-xl uppercase">
                                                     {trip.name.charAt(0)}
                                                 </div>
@@ -207,10 +207,10 @@ const App = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-1 md:gap-2 flex-shrink-0 ml-2">
                                                 <button
                                                     onClick={(e) => handleDeleteTrip(e, trip.id)}
-                                                    className="p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                                                    className="p-2 md:p-3 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                                                     title="Delete Trip"
                                                 >
                                                     <Trash2 className="w-5 h-5" />
